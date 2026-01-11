@@ -1,73 +1,79 @@
-"use client"
+"use client";
 
-import { Navbar } from "@/components/navbar"
-import { ProductCard } from "@/components/product-card"
-import Link from "next/link"
-import { useEffect, useState } from "react"
+import { Navbar } from "@/components/navbar";
+import { ProductCard } from "@/components/product-card";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const products = [
   {
     id: 1,
     category: "Premium Shoes",
     name: "Milano Elegance",
-    description: "Hand-crafted Italian leather shoes with superior comfort. Exquisite design meets timeless elegance.",
+    description:
+      "Hand-crafted Italian leather shoes with superior comfort. Exquisite design meets timeless elegance.",
     image: "/luxury-premium-leather-shoes-elegant-design.jpg",
   },
   {
     id: 2,
     category: "Luxury Slippers",
     name: "Cloud Comfort",
-    description: "Indulge in ultimate comfort with our silk-lined slippers. Perfect for moments of pure relaxation.",
+    description:
+      "Indulge in ultimate comfort with our silk-lined slippers. Perfect for moments of pure relaxation.",
     image: "/luxury-silk-slippers-comfortable-elegant.jpg",
   },
   {
     id: 3,
     category: "Designer Clogs",
     name: "Heritage Clog",
-    description: "Timeless Scandinavian design meets contemporary luxury. A statement piece for the discerning.",
+    description:
+      "Timeless Scandinavian design meets contemporary luxury. A statement piece for the discerning.",
     image: "/luxury-designer-clogs-scandinavian-style.jpg",
   },
   {
     id: 4,
     category: "Luxury Sandals",
     name: "Aegean Breeze",
-    description: "Mediterranean-inspired sandals crafted from premium materials. Comfort reimagined for summer.",
+    description:
+      "Mediterranean-inspired sandals crafted from premium materials. Comfort reimagined for summer.",
     image: "/luxury-designer-sandals-mediterranean-premium.jpg",
   },
   {
     id: 5,
     category: "Fashion Sliders",
     name: "Celestial Slides",
-    description: "Sophisticated sliders with premium cushioning. Casual elegance for modern living.",
+    description:
+      "Sophisticated sliders with premium cushioning. Casual elegance for modern living.",
     image: "/luxury-fashion-sliders-premium-cushioned.jpg",
   },
   {
     id: 6,
     category: "Limited Edition",
     name: "Obsidian Essence",
-    description: "Exclusive limited-edition piece. Where artistry meets craftsmanship in every stitch.",
+    description:
+      "Exclusive limited-edition piece. Where artistry meets craftsmanship in every stitch.",
     image: "/luxury-limited-edition-obsidian-exclusive-footwear.jpg",
   },
-]
+];
 
 export default function Home() {
-  const [scrollY, setScrollY] = useState(0)
+  const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrollY(window.scrollY)
-    }
+      setScrollY(window.scrollY);
+    };
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 min-h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative pt-2 pb-0 px-4 sm:px-6 lg:px-8 min-h-[600px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-background via-secondary to-background opacity-50" />
 
         <div className="relative z-10 max-w-4xl mx-auto text-center space-y-8">
@@ -79,22 +85,14 @@ export default function Home() {
             }}
           >
             <h1 className="text-4xl sm:text-5xl md:text-7xl font-light text-balance text-foreground">
-              Where Every Step <span className="font-semibold text-primary">Tells a Story</span>
+              Where Every Step{" "}
+              <span className="font-semibold text-primary">Tells a Story</span>
             </h1>
             <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto text-balance leading-relaxed">
-              Discover Muvez: the pinnacle of luxury footwear craftsmanship. Each design is a testament to elegance,
-              comfort, and timeless sophistication.
+              Discover Muvez: the pinnacle of luxury footwear craftsmanship.
+              Each design is a testament to elegance, comfort, and timeless
+              sophistication.
             </p>
-          </div>
-
-          {/* Hero Section Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
-            <Link
-              href="/survey"
-              className="px-8 py-4 bg-primary text-primary-foreground rounded-sm hover:bg-accent transition-all duration-300 font-medium tracking-wide"
-            >
-              Take the Survey
-            </Link>
           </div>
         </div>
       </section>
@@ -104,13 +102,16 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           {/* Section Header */}
           <div className="text-center mb-16 space-y-4">
-            <p className="text-xs font-semibold text-primary tracking-widest uppercase">Our Collection</p>
+            <p className="text-xs font-semibold text-primary tracking-widest uppercase">
+              Our Collection
+            </p>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-light text-foreground text-balance">
               Curated Excellence
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Each piece in our collection represents a perfect blend of aesthetics and comfort, designed for those who
-              appreciate true luxury.
+              Each piece in our collection represents a perfect blend of
+              aesthetics and comfort, designed for those who appreciate true
+              luxury.
             </p>
           </div>
 
@@ -134,7 +135,9 @@ export default function Home() {
       <section className="py-8 px-4 sm:px-6 lg:px-8 bg-background">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16 space-y-4">
-            <p className="text-xs font-semibold text-primary tracking-widest uppercase">Why Choose Muvez</p>
+            <p className="text-xs font-semibold text-primary tracking-widest uppercase">
+              Why Choose Muvez
+            </p>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-light text-foreground text-balance">
               Crafted Perfection
             </h2>
@@ -149,7 +152,8 @@ export default function Home() {
               },
               {
                 title: "Artisan Craftsmanship",
-                description: "Each piece is meticulously handcrafted by master artisans with decades of experience.",
+                description:
+                  "Each piece is meticulously handcrafted by master artisans with decades of experience.",
               },
               {
                 title: "Timeless Design",
@@ -161,8 +165,12 @@ export default function Home() {
                 key={index}
                 className="p-8 border border-border rounded-lg hover:border-primary transition-colors duration-300 bg-card/50"
               >
-                <h3 className="text-xl font-semibold text-foreground mb-3">{feature.title}</h3>
-                <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
+                <h3 className="text-xl font-semibold text-foreground mb-3">
+                  {feature.title}
+                </h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  {feature.description}
+                </p>
               </div>
             ))}
           </div>
@@ -176,7 +184,8 @@ export default function Home() {
             Ready to Discover Your Perfect Fit?
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Take our interactive survey to find the perfect Muvez footwear that matches your lifestyle and preferences.
+            Take our interactive survey to find the perfect Muvez footwear that
+            matches your lifestyle and preferences.
           </p>
           <Link
             href="/survey"
@@ -197,5 +206,5 @@ export default function Home() {
         </div>
       </footer>
     </div>
-  )
+  );
 }
