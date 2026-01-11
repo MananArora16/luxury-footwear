@@ -121,16 +121,19 @@ export default function SurveyPage() {
         body: JSON.stringify({ answers, surveyQuestions }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        throw new Error("Failed to submit survey");
+        throw new Error(data.error || "Failed to submit survey");
       }
 
       setSubmitted(true);
     } catch (error) {
-      console.error("Error submitting survey:", error);
-      setSubmitError(
-        "Failed to submit survey. Please check your internet connection and try again."
-      );
+      const errorMessage = error instanceof Error ? error.message : "Failed to submit survey";
+      setSubmitError(errorMessage);
+      if (typeof window !== "undefined" && window.console) {
+        window.console.error("Submission error:", errorMessage);
+      }
     } finally {
       setIsSubmitting(false);
     }
