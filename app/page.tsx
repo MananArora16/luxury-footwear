@@ -2,6 +2,7 @@
 
 import { Navbar } from "@/components/navbar";
 import { ProductCard } from "@/components/product-card";
+import { useAnalytics, trackEvent } from "@/hooks/use-analytics";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -58,6 +59,9 @@ const products = [
 
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
+  
+  // Initialize Google Analytics
+  useAnalytics();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -67,6 +71,13 @@ export default function Home() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleSurveyClick = () => {
+    trackEvent("start_survey_clicked", {
+      location: "homepage_cta",
+      timestamp: new Date().toISOString(),
+    });
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -189,6 +200,7 @@ export default function Home() {
           </p>
           <Link
             href="/survey"
+            onClick={handleSurveyClick}
             className="inline-block px-8 py-4 bg-primary text-primary-foreground rounded-sm hover:bg-accent transition-all duration-300 font-medium tracking-wide"
           >
             Start Survey
