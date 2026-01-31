@@ -1,9 +1,5 @@
 import { useEffect } from "react"
 
-declare global {
-  window: any
-}
-
 export const useAnalytics = () => {
   useEffect(() => {
     const measurementId = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID
@@ -18,23 +14,23 @@ export const useAnalytics = () => {
     script.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`
     document.head.appendChild(script)
 
-    window.dataLayer = window.dataLayer || []
+    ;(window as any).dataLayer = (window as any).dataLayer || []
     function gtag(...args: any[]) {
-      window.dataLayer.push(arguments)
+      ;(window as any).dataLayer.push(arguments)
     }
     gtag("js", new Date())
     gtag("config", measurementId, {
       page_path: window.location.pathname,
     })
 
-    window.gtag = gtag
+    ;(window as any).gtag = gtag
   }, [])
 }
 
 
 export const trackEvent = (eventName: string, eventData?: Record<string, any>) => {
-  if (typeof window !== "undefined" && window.gtag) {
-    window.gtag("event", eventName, eventData || {})
+  if (typeof window !== "undefined" && (window as any).gtag) {
+    ;(window as any).gtag("event", eventName, eventData || {})
   } else {
     console.warn("Google Analytics not initialized")
   }

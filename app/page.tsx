@@ -3,65 +3,36 @@
 import { Navbar } from "@/components/navbar";
 import { ProductCard } from "@/components/product-card";
 import { useAnalytics, trackEvent } from "@/hooks/use-analytics";
+import { categories } from "@/lib/constants";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const products = [
-  {
-    id: 1,
-    category: "Premium Shoes",
-    name: "Milano Elegance",
-    description:
-      "Hand-crafted Italian leather shoes with superior comfort. Exquisite design meets timeless elegance.",
-    image: "/luxury-premium-leather-shoes-elegant-design.jpg",
-  },
-  {
-    id: 2,
-    category: "Luxury Slippers",
-    name: "Cloud Comfort",
-    description:
-      "Indulge in ultimate comfort with our silk-lined slippers. Perfect for moments of pure relaxation.",
-    image: "/luxury-silk-slippers-comfortable-elegant.jpg",
-  },
-  {
-    id: 3,
-    category: "Designer Clogs",
-    name: "Heritage Clog",
-    description:
-      "Timeless Scandinavian design meets contemporary luxury. A statement piece for the discerning.",
-    image: "/luxury-designer-clogs-scandinavian-style.jpg",
-  },
-  {
-    id: 4,
-    category: "Luxury Sandals",
-    name: "Aegean Breeze",
-    description:
-      "Mediterranean-inspired sandals crafted from premium materials. Comfort reimagined for summer.",
-    image: "/luxury-designer-sandals-mediterranean-premium.jpg",
-  },
-  {
-    id: 5,
-    category: "Fashion Sliders",
-    name: "Celestial Slides",
-    description:
-      "Sophisticated sliders with premium cushioning. Casual elegance for modern living.",
-    image: "/luxury-fashion-sliders-premium-cushioned.jpg",
-  },
-  {
-    id: 6,
-    category: "Limited Edition",
-    name: "Obsidian Essence",
-    description:
-      "Exclusive limited-edition piece. Where artistry meets craftsmanship in every stitch.",
-    image: "/luxury-limited-edition-obsidian-exclusive-footwear.jpg",
-  },
-];
+const handleCategoryClick = (category: string, categoryId: number) => {
+  trackEvent("button_clicked", {
+    button_name: "product_card",
+    product_category: category,
+    product_id: categoryId,
+  });
+  trackEvent("category_clicked", {
+    category: category,
+    location: "homepage",
+    timestamp: new Date().toISOString(),
+  });
+};
 
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
-  
+
   // Initialize Google Analytics
   useAnalytics();
+
+  useEffect(() => {
+    trackEvent("page_view", {
+      page_title: "Home",
+      page_path: "/",
+      timestamp: new Date().toISOString(),
+    });
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -73,6 +44,10 @@ export default function Home() {
   }, []);
 
   const handleSurveyClick = () => {
+    trackEvent("button_clicked", {
+      button_name: "start_survey_cta",
+      location: "homepage_cta_section",
+    });
     trackEvent("start_survey_clicked", {
       location: "homepage_cta",
       timestamp: new Date().toISOString(),
@@ -108,7 +83,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Products Showcase - Grid Section */}
+      {/* categories Showcase - Grid Section */}
       <section className="py-8 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background to-secondary/20">
         <div className="max-w-7xl mx-auto">
           {/* Section Header */}
@@ -128,15 +103,17 @@ export default function Home() {
 
           {/* Product Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
-            {products.map((product, index) => (
-              <div
-                key={product.id}
+            {categories.map((category, index) => (
+              <Link
+                key={category.name}
+                href={`/product/${category.id}`}
+                onClick={() => handleCategoryClick(category.name, category.id)}
                 style={{
                   animation: `fadeInUp 0.6s ease-out ${index * 0.1}s both`,
                 }}
               >
-                <ProductCard {...product} />
-              </div>
+                <ProductCard {...category} />
+              </Link>
             ))}
           </div>
         </div>

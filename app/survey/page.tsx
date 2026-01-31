@@ -3,7 +3,8 @@
 import { Navbar } from "@/components/navbar";
 import { ScrollProgressBar } from "@/components/scroll-progress-bar";
 import { SurveyQuestion } from "@/components/survey-question";
-import { useState } from "react";
+import { useAnalytics, trackEvent } from "@/hooks/use-analytics";
+import { useState, useEffect } from "react";
 
 const surveyQuestions = [
   {
@@ -101,16 +102,37 @@ export default function SurveyPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
+  // Initialize Google Analytics
+  useAnalytics();
+
+  useEffect(() => {
+    trackEvent("page_view", {
+      page_title: "Survey",
+      page_path: "/survey",
+      timestamp: new Date().toISOString(),
+    });
+  }, []);
+
   const handleAnswer = (questionId: number, answer: string) => {
     setAnswers((prev) => ({
       ...prev,
       [questionId]: answer,
     }));
+    trackEvent("form_input_selected", {
+      question_id: questionId,
+      answer: answer,
+      timestamp: new Date().toISOString(),
+    });
   };
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
     setSubmitError(null);
+
+    trackEvent("button_clicked", {
+      button_name: "submit_survey",
+      answers_count: Object.keys(answers).length,
+    });
 
     try {
       const response = await fetch("/api/survey-submit", {
@@ -126,6 +148,11 @@ export default function SurveyPage() {
       if (!response.ok) {
         throw new Error(data.error || "Failed to submit survey");
       }
+
+      trackEvent("survey_submitted", {
+        answers_count: Object.keys(answers).length,
+        timestamp: new Date().toISOString(),
+      });
 
       setSubmitted(true);
     } catch (error) {
@@ -246,6 +273,11 @@ export default function SurveyPage() {
 
           <a
             href="/"
+            onClick={() => {
+              trackEvent("button_clicked", {
+                button_name: "back_to_home_survey",
+              });
+            }}
             className="inline-block text-primary hover:text-accent transition-colors font-medium"
           >
             Back to Home

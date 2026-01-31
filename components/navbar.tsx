@@ -3,11 +3,15 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { Menu, X, Moon, Sun } from "lucide-react";
+import { Menu, X, Moon, Sun, ShoppingCart } from "lucide-react";
+import { useCart } from "@/context/cart-context";
+import { trackEvent } from "@/hooks/use-analytics";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
+  const { items } = useCart();
+  const cartCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
   useEffect(() => {
     const isDarkMode = document.documentElement.classList.contains("dark");
@@ -18,6 +22,15 @@ export function Navbar() {
     const htmlElement = document.documentElement;
     htmlElement.classList.toggle("dark");
     setIsDark(!isDark);
+    trackEvent("theme_toggled", {
+      new_theme: !isDark ? "dark" : "light",
+    });
+  };
+
+  const handleNavClick = (location: string) => {
+    trackEvent("navigation_clicked", {
+      link: location,
+    });
   };
 
   return (
@@ -30,15 +43,29 @@ export function Navbar() {
               alt="MUVEZ Logo"
               width={50}
               height={50}
-              className="h-[70px] w-auto"
+              className="h-[50px] w-auto"
             />
-            <div className="text-2xl font-bold tracking-tight text-primary">
+            <div className="text-2xl font-bold tracking-tight text-primary hidden sm:block">
               MUVEZ
             </div>
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
+            <Link 
+              href="/" 
+              onClick={() => handleNavClick("home")}
+              className="text-foreground hover:text-primary transition-colors"
+            >
+              Home
+            </Link>
+            <Link 
+              href="/products/premium-shoes" 
+              onClick={() => handleNavClick("shop")}
+              className="text-foreground hover:text-primary transition-colors"
+            >
+              Shop
+            </Link>
             <button
               onClick={toggleTheme}
               className="p-2 rounded-sm hover:bg-muted transition-colors"
@@ -50,10 +77,34 @@ export function Navbar() {
                 <Moon className="w-5 h-5" />
               )}
             </button>
+            <Link 
+              href="/cart"
+              onClick={() => handleNavClick("cart")}
+              className="relative p-2 hover:bg-muted rounded-sm transition-colors"
+            >
+              <ShoppingCart className="w-5 h-5" />
+              {cartCount > 0 && (
+                <span className="absolute top-1 right-1 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
           </div>
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center gap-2">
+            <Link 
+              href="/cart"
+              onClick={() => handleNavClick("cart")}
+              className="relative p-2 hover:bg-muted rounded-sm transition-colors"
+            >
+              <ShoppingCart className="w-5 h-5" />
+              {cartCount > 0 && (
+                <span className="absolute top-1 right-1 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
             <button
               onClick={toggleTheme}
               className="p-2 rounded-sm hover:bg-muted transition-colors"
@@ -74,6 +125,32 @@ export function Navbar() {
             </button>
           </div>
         </div>
+
+        {/* Mobile Menu */}
+        {isOpen && (
+          <div className="md:hidden border-t border-border py-4 space-y-3">
+            <Link 
+              href="/"
+              className="block px-4 py-2 text-foreground hover:bg-muted rounded transition-colors"
+              onClick={() => {
+                setIsOpen(false);
+                handleNavClick("home");
+              }}
+            >
+              Home
+            </Link>
+            <Link 
+              href="/products/premium-shoes"
+              className="block px-4 py-2 text-foreground hover:bg-muted rounded transition-colors"
+              onClick={() => {
+                setIsOpen(false);
+                handleNavClick("shop");
+              }}
+            >
+              Shop
+            </Link>
+          </div>
+        )}
       </div>
     </nav>
   );
