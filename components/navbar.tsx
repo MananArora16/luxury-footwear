@@ -59,13 +59,7 @@ export function Navbar() {
             >
               Home
             </Link>
-            <Link 
-              href="/products/premium-shoes" 
-              onClick={() => handleNavClick("shop")}
-              className="text-foreground hover:text-primary transition-colors"
-            >
-              Shop
-            </Link>
+           
             <button
               onClick={toggleTheme}
               className="p-2 rounded-sm hover:bg-muted transition-colors"
@@ -139,16 +133,7 @@ export function Navbar() {
             >
               Home
             </Link>
-            <Link 
-              href="/products/premium-shoes"
-              className="block px-4 py-2 text-foreground hover:bg-muted rounded transition-colors"
-              onClick={() => {
-                setIsOpen(false);
-                handleNavClick("shop");
-              }}
-            >
-              Shop
-            </Link>
+           
           </div>
         )}
       </div>
