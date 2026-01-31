@@ -118,7 +118,7 @@ export default function OrderSuccessPage() {
               Back to Home
             </Link>
             <Link
-              href="/products/premium-shoes"
+              href="/"
               className="px-8 py-3 border border-border rounded-sm hover:border-primary text-foreground transition-colors font-medium"
             >
               Continue Shopping
